@@ -72,7 +72,7 @@ Follow these steps to run the project locally.
 
 ### **2\. Clone the Repository**
 
-git clone \[https://github.com/GHSHamad312/exam-seating-manager.git]
+git clone [https://github.com/GHSHamad312/exam-seating-manager.git]
 cd exam-seating-plan
 
 ### **3\. Install Dependencies**
