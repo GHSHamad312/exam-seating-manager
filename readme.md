@@ -33,7 +33,6 @@ A comprehensive web-based application designed to automate the generation of con
 * **Node.js**: Runtime environment.  
 * **Express.js**: Web framework for API routing and middleware.  
 * **MySQL**: Relational database for storing entities.  
-* **MySQL2**: Database driver.  
 * **Dotenv**: Environment variable management.
 
 **Frontend**
