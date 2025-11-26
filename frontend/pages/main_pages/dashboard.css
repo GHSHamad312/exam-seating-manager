@@ -1,0 +1,413 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: sans-serif;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden; 
+}
+
+/* top */
+.top{
+    width: 100%;
+    height: 15%;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 35px;
+    box-shadow: 0 4px 5px rgb(121, 121, 121);
+    position: relative;
+    z-index: 13;
+    justify-content: space-between;
+}
+.image img{
+    width: 200px;
+}
+.pagedesc{
+    font-size: 24px;
+    font-weight: bold;
+
+}
+.logout-btn {
+    margin-left: auto;
+    padding: 8px 20px;
+    background: white;
+    color: red;
+    border: 2px solid red;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.logout-btn:hover {
+    background: red;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 0, 0, 0.4);
+}
+.logout-btn:active {
+    transform: translateY(0);
+}
+
+
+/* sidebar */
+.sidebar{
+    width: 17%;
+    height: 85%;
+    border-right: 1.5px solid black; 
+    float: left;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+.upperli ul{
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.upperli ul li a{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    color: gray;
+    font-size: 20px;
+}
+.upperli ul li{
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    width: 230px;
+    height: 60px;
+    border-radius: 20px;
+    transition: 200ms;
+}
+.upperli ul li:hover{
+    background-color: rgba(212, 82, 255, 0.16);
+    cursor: pointer;
+}
+
+/* main */
+.main{
+    width: 83%;
+    height: 85%;
+    float: right;
+    background-color: rgba(244, 250, 254, 1);
+    z-index: 2;
+    position: relative;
+    padding: 50px 50px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    align-content: center;
+    gap: 30px 10px;
+    align-items: center;
+    justify-content: center;
+}
+.upper{
+    width: 49%;
+    height: 150px;
+    border-radius: 15px;
+    padding: 11px 15px;
+}
+.middle{
+    width: 32%;
+    height: 150px;
+    border-radius: 15px;
+    padding: 20px 10px;
+}
+.lower{
+    width: 100%;
+    height: 150px;
+    border-radius: 15px;
+}
+.shadow
+{
+    background-color: #fff;
+    box-shadow: 0 3px 7px rgb(165, 165, 165);
+    min-width: 200px;
+}
+#plan{
+    color: white;
+    background-color: rgba(192, 65, 173, 0.47);
+}
+.uptitle{
+    font-size: 25px;
+    font-weight: 900;
+}
+.updesc{
+    margin-top: 10px;
+}
+.confbut{
+    margin-top: 15px;
+        cursor: pointer;
+}
+.confbut button{
+    border: none;
+    background-color: rgba(192, 65, 173, 1);
+    width: 200px;
+    height: 40px;
+    border-radius: 13px;
+    color: white;
+    font-size: 17px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 200ms;
+    
+}
+.confbut button:hover{
+    border: none;
+    background-color: rgb(255, 233, 252);
+    width: 200px;
+    height: 40px;
+    border-radius: 13px;
+    color: rgb(0, 0, 0);
+    font-size: 17px;
+    font-weight: 800;
+
+}
+.comingtitle{
+    font-size: 25px;
+    font-weight: 900;
+    height: 30px;
+}
+#exams{
+    height: 75px;
+    overflow: auto;
+}
+#exams li{
+margin-top: 5px;
+font-size: 13px;
+color: gray;
+}
+.expage a{
+    text-decoration: none;
+    color: lightgreen;
+}
+.midtitle{
+    font-size: 18px;
+    font-weight: 700;
+}
+.midnum{
+    font-size: 35px;
+    font-weight: 900;
+}
+.middesc{
+    color: gray;
+}
+.midlink{
+        margin-top: 10px;
+}
+.midlink a{
+    text-decoration: none;
+}
+#first a{
+    color: blueviolet;
+    font-weight: 600;
+}
+#second a{
+    color: greenyellow;
+    font-weight: 600;
+}
+#third a{
+    color: gold;
+    font-weight: 600;
+}
+.lower{
+     padding: 20px 30px;
+}
+.notilist{
+    margin-top: 10px;
+    height: 80px;
+    overflow: auto;
+
+}
+.notilist li{
+    margin-top: 5px;
+}
+
+        /* =======================
+           SEATING PLAN MODAL
+        ======================== */
+        #seatingPlanModal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        #seatingPlanModal .modal-content {
+            background-color: #fff;
+            margin: 80px auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 500px;
+            max-width: 90%;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+            font-family: sans-serif;
+        }
+
+        #seatingPlanModal .modal-header {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        #seatingPlanModal label {
+            display: block;
+            margin: 12px 0 6px;
+            font-weight: 500;
+        }
+
+        #seatingPlanModal select {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+            margin-bottom: 15px;
+        }
+
+        #seatingPlanModal .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        #seatingPlanModal button {
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: none;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        #seatingPlanModal .confirm-btn {
+            background-color: #8418ff;
+            color: white;
+        }
+
+        #seatingPlanModal .confirm-btn:hover {
+            background-color: #6a13c8;
+        }
+
+        #seatingPlanModal .cancel-btn {
+            background-color: #ccc;
+            color: #333;
+        }
+
+        #seatingPlanModal .cancel-btn:hover {
+            background-color: #999;
+        }
+
+        #seatingPlanModal .close-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #555;
+            cursor: pointer;
+        }
+
+        #seatingPlanModal .close-btn:hover {
+            color: #000;
+        }
+
+        /* =======================
+           STUDENT SEARCH & LIST
+        ======================== */
+        #studentSearch {
+            width: 100%;
+            padding: 6px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        #studentButtons {
+            margin-bottom: 10px;
+            display: flex;
+            gap: 8px;
+        }
+
+        #studentButtons button {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        #selectAllBtn {
+            background-color: #8418ff;
+            color: #fff;
+        }
+
+        #deselectAllBtn {
+            background-color: #ccc;
+            color: #333;
+        }
+
+        #studentList {
+            max-height: 150px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 8px;
+        }
+
+        #studentList label {
+            display: block;
+            margin-bottom: 4px;
+            cursor: pointer;
+        }
+
+        /* =======================
+           NOTIFICATION TOAST
+        ======================== */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #8418ff;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 15px;
+            box-shadow: 0px 4px 12px rgba(0,0,0,0.3);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            z-index: 2000;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+@media (min-width:400px){
+body{
+    overflow:auto ;
+}
+} 
+

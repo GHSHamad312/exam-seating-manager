@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="reg.css">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Remix Icons (WORKING ICONS) -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="card">
+            <h2>Create Your Account</h2>
+
+            <form id="registerForm">
+                <!-- Full Name -->
+                <label for="name">Full Name</label>
+                <div class="input-box">
+                    <input id="name" name="name" type="text" placeholder="Full name" required>
+                    <i class="ri-user-line"></i>
+                </div>
+
+                <!-- Email -->
+                <label for="email">Email Address</label>
+                <div class="input-box">
+                    <input id="email" name="email" type="email" placeholder="you@example.com" required>
+                    <i class="ri-mail-line"></i>
+                </div>
+
+                <!-- Password -->
+                <label for="password">Password</label>
+                <div class="input-box">
+                    <input id="password" name="password" type="password" placeholder="Minimum 8 characters" required minlength="8">
+                    <i class="ri-lock-2-line"></i>
+                </div>
+
+                <!-- Checkbox -->
+                <div class="terms">
+                    <input id="terms" type="checkbox">
+                    <p>I agree to Terms of Service and <a href="#">Privacy Policy</a></p>
+                </div>
+
+                <!-- Button -->
+                <button class="btn primary" type="submit">Register Account</button>
+            </form>
+            <div style="margin-top:12px;text-align:center;">
+                <span>Already have an account? </span><a class="btn-link" href="login.html">Login</a>
+            </div>
+            <script>
+                const API_BASE = 'http://localhost:4000/api';
+                document.getElementById('registerForm').addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const name = document.getElementById('name').value.trim();
+                    const email = document.getElementById('email').value.trim();
+                    const password = document.getElementById('password').value;
+                    const terms = document.getElementById('terms').checked;
+                    if (!terms) { alert('Please agree to Terms of Service'); return; }
+                    try {
+                        const res = await fetch(`${API_BASE}/auth/register`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ name, email, password })
+                        });
+                        const data = await res.json();
+                        if (res.ok) {
+                            localStorage.setItem('authToken', data.token);
+                            localStorage.setItem('userName', data.user.name);
+                            window.location.href = 'http://127.0.0.1:3000/frontend/pages/main_pages/dashboard.html';
+                        } else {
+                            alert(data.error || 'Registration failed');
+                        }
+                    } catch (err) {
+                        alert('Connection error. Please try again.');
+                    }
+                });
+            </script>
+
+        </div>
+    </div>
+
+</body>
+</html>

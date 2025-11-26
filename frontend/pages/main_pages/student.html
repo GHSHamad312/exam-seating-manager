@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExamSeatingPlanner</title>
+    <link rel="stylesheet" href="student.css">
+</head>
+
+<body>
+    <div class="top">
+        <div class="image">
+            <img src="../../assets/logocut.png" alt="">
+        </div>
+        <div class="pagedesc">Students</div>
+    </div>
+
+    <div class="sidebar">
+        <div class="upperli">
+            <ul>
+                <li><a href="./dashboard.html"><img src="../../assets/home.png" alt="" width="35px">Dashboard</a></li>
+                <li style="background-color: rgba(212, 82, 255, 0.16);"><a href="./student.html"><img
+                            src="../../assets/Vector.png" alt="" width="25px" style="margin-left: 5px;">Students</a>
+                </li>
+                <li><a href="./rooms.html"><img src="../../assets/meeting_room.png" alt="" width="35px">Rooms</a></li>
+                <li><a href="./semesters.html"><img src="../../assets/calendar_today.png" alt="" width="30px"
+                            style="margin-left: 2px;">Semesters</a></li>
+                <li><a href="./reports.html"><img src="../../assets/content_copy.png" alt="" width="35px">Reports</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="main">
+        <div class="box">
+            <div class="bxtitle">Students Overview</div>
+            <div class="bxmid">
+                <button id="addNewStudentBtn">
+                    Add New Student
+                </button>
+                <input id="studentSearchInput" type="text" placeholder="Search Student...">
+            </div>
+            <div class="table">
+                <table id="myTable">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Cms</th>
+            <th>Semester</th>
+            <th>Department</th>
+            <th>Buttons</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td>Ali</td>
+            <td>22</td>
+            <td>5</td>
+            <td>CS</td>
+            <td>
+                <button class="edit-btn" title="Edit">✎</button>
+                <button class="delete-btn" title="Delete">🗑</button>
+            </td>
+        </tr>
+        <tr>
+            <td>Hamad</td>
+            <td>20</td>
+            <td>4</td>
+            <td>CS</td>
+            <td>
+                <button class="edit-btn" title="Edit">✎</button>
+                <button class="delete-btn" title="Delete">🗑</button>
+            </td>
+        </tr>
+        <tr>
+            <td>Hamad</td>
+            <td>20</td>
+            <td>4</td>
+            <td>CS</td>
+            <td>
+                <button class="edit-btn" title="Edit">✎</button>
+                <button class="delete-btn" title="Delete">🗑</button>
+            </td>
+        </tr>
+        <tr>
+            <td>Hamad</td>
+            <td>20</td>
+            <td>4</td>
+            <td>CS</td>
+            <td>
+                <button class="edit-btn" title="Edit">✎</button>
+                <button class="delete-btn" title="Delete">🗑</button>
+            </td>
+        </tr>
+        <tr>
+            <td>Hamad</td>
+            <td>20</td>
+            <td>4</td>
+            <td>CS</td>
+            <td>
+                <button class="edit-btn" title="Edit">✎</button>
+                <button class="delete-btn" title="Delete">🗑</button>
+            </td>
+        </tr>
+        <tr>
+            <td>Hamad</td>
+            <td>20</td>
+            <td>4</td>
+            <td>CS</td>
+            <td>
+                <button class="edit-btn" title="Edit">✎</button>
+                <button class="delete-btn" title="Delete">🗑</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD NEW STUDENT MODAL -->
+    <div id="addStudentModal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div class="modal-header">Add New Student</div>
+
+            <form id="studentForm">
+                <label for="studentName">Student Name</label>
+                <input type="text" id="studentName" name="name" required placeholder="Enter student name">
+
+                <label for="studentCMS">CMS Number</label>
+                <input type="text" id="studentCMS" name="cms" required placeholder="Enter CMS number">
+
+                <label for="studentSemester">Semester</label>
+                <input type="number" id="studentSemester" name="semester" required placeholder="Enter semester" min="1">
+
+                <label for="studentDepartment">Department</label>
+                <input type="text" id="studentDepartment" name="department" required placeholder="Enter department">
+
+                <div class="modal-buttons">
+                    <button type="button" class="cancel-btn">Cancel</button>
+                    <button type="submit" class="confirm-btn">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION -->
+    <div id="notification" class="notification"></div>
+
+    <script>
+        const API_BASE = 'http://localhost:4000/api';
+        // UI elements
+        const modal = document.getElementById("addStudentModal");
+        const addBtn = document.getElementById("addNewStudentBtn");
+        const closeBtn = document.querySelector(".close-btn");
+        const cancelBtn = document.querySelector(".cancel-btn");
+        const studentForm = document.getElementById("studentForm");
+        const notification = document.getElementById("notification");
+        const tbody = document.querySelector('#myTable tbody');
+        const searchInput = document.getElementById('studentSearchInput');
+        const cmsInput = document.getElementById('studentCMS');
+
+        let editingCMS = null;
+
+        function openModal() {
+            modal.style.display = "block";
+            studentForm.reset();
+        }
+        function closeModal() { modal.style.display = "none"; editingCMS = null; cmsInput.disabled = false; document.querySelector('#studentForm .confirm-btn').textContent = 'Submit'; }
+
+        function showNotification(message, type = 'success') {
+            notification.textContent = message;
+            notification.style.backgroundColor = (type === 'error') ? '#ff4d4f' : '#8418ff';
+            notification.classList.add('show');
+            setTimeout(() => notification.classList.remove('show'), 3000);
+        }
+
+        async function fetchStudents(q) {
+            try {
+                const url = q ? `${API_BASE}/students/search?q=${encodeURIComponent(q)}` : `${API_BASE}/students`;
+                const res = await fetch(url);
+                if (!res.ok) throw new Error('Failed to fetch');
+                const data = await res.json();
+                renderStudents(data.students || data.students || data);
+            } catch (err) {
+                console.error(err);
+                showNotification('Could not load students', 'error');
+            }
+        }
+
+        function renderStudents(list) {
+            const students = Array.isArray(list) ? list : (list.students || []);
+            tbody.innerHTML = '';
+            students.forEach(s => {
+                const tr = document.createElement('tr');
+                const nameTd = document.createElement('td'); nameTd.textContent = s.name;
+                const cmsTd = document.createElement('td'); cmsTd.textContent = s.cms;
+                const semTd = document.createElement('td'); semTd.textContent = s.semester_id || s.semester || '';
+                const depTd = document.createElement('td'); depTd.textContent = s.department_id || s.department || '';
+                const actionsTd = document.createElement('td');
+
+                const editBtn = document.createElement('button'); editBtn.className = 'edit-btn'; editBtn.title = 'Edit'; editBtn.textContent = '✎';
+                const delBtn = document.createElement('button'); delBtn.className = 'delete-btn'; delBtn.title = 'Delete'; delBtn.textContent = '🗑';
+
+                editBtn.addEventListener('click', () => startEditStudent(s));
+                delBtn.addEventListener('click', () => deleteStudent(s.cms, tr));
+
+                actionsTd.appendChild(editBtn); actionsTd.appendChild(delBtn);
+
+                tr.appendChild(nameTd); tr.appendChild(cmsTd); tr.appendChild(semTd); tr.appendChild(depTd); tr.appendChild(actionsTd);
+                tbody.appendChild(tr);
+            });
+        }
+
+        function startEditStudent(s) {
+            editingCMS = s.cms;
+            document.getElementById("studentName").value = s.name || '';
+            document.getElementById("studentCMS").value = s.cms || '';
+            document.getElementById("studentSemester").value = s.semester_id || s.semester || '';
+            document.getElementById("studentDepartment").value = s.department_id || s.department || '';
+            cmsInput.disabled = true;
+            document.querySelector('#studentForm .confirm-btn').textContent = 'Update';
+            openModal();
+        }
+
+        async function deleteStudent(cms, rowEl) {
+            if (!confirm('Are you sure you want to delete this student?')) return;
+            try {
+                const res = await fetch(`${API_BASE}/students/${encodeURIComponent(cms)}`, { method: 'DELETE' });
+                if (!res.ok) throw new Error('Delete failed');
+                rowEl.remove();
+                showNotification('Student deleted successfully!');
+            } catch (err) {
+                console.error(err);
+                showNotification('Failed to delete student', 'error');
+            }
+        }
+
+        // event handlers
+        addBtn.addEventListener('click', () => { editingCMS = null; cmsInput.disabled = false; document.querySelector('#studentForm .confirm-btn').textContent = 'Submit'; openModal(); });
+        closeBtn.addEventListener('click', closeModal);
+        cancelBtn.addEventListener('click', closeModal);
+        window.addEventListener('click', (event) => { if (event.target === modal) closeModal(); });
+
+        studentForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const payload = {
+                name: document.getElementById("studentName").value,
+                semester: document.getElementById("studentSemester").value,
+                department: document.getElementById("studentDepartment").value,
+            };
+            try {
+                let res;
+                if (editingCMS) {
+                    res = await fetch(`${API_BASE}/students/${encodeURIComponent(editingCMS)}`, {
+                        method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+                    });
+                } else {
+                    payload.cms = document.getElementById("studentCMS").value;
+                    res = await fetch(`${API_BASE}/students`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                }
+
+                if (res.ok) {
+                    showNotification(editingCMS ? 'Student updated' : 'Student added successfully');
+                    closeModal();
+                    await fetchStudents();
+                } else {
+                    const err = await res.json();
+                    showNotification(err.error || 'Failed', 'error');
+                }
+            } catch (err) {
+                console.error(err);
+                showNotification('Error connecting to backend', 'error');
+            }
+        });
+
+        searchInput.addEventListener('input', (e) => {
+            const q = e.target.value.trim();
+            if (!q) fetchStudents(); else fetchStudents(q);
+        });
+
+        // initial load
+        document.addEventListener('DOMContentLoaded', () => fetchStudents());
+    </script>
+</body>
+
+</html>

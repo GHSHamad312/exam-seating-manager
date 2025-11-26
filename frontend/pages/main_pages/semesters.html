@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExamSeatingPlanner</title>
+    <link rel="stylesheet" href="semesters.css">
+</head>
+<body>
+    <div class="top">
+        <div class="image">
+            <img src="../../assets/logocut.png" alt="">
+        </div>
+        <div class="pagedesc">Semesters</div>
+    </div>
+
+    <div class="sidebar">
+    <div class="upperli">
+            <ul>
+                 <li ><a href="./dashboard.html"><img src="../../assets/home.png" alt="" width="35px" >Dashboard</a></li>
+            <li><a href="./student.html"><img src="../../assets/Vector.png" alt="" width="25px" style="margin-left: 5px;">Students</a></li>
+            <li><a href="./rooms.html"><img src="../../assets/meeting_room.png" alt="" width="35px">Rooms</a></li>
+            <li style="background-color: rgba(212, 82, 255, 0.16);"><a href="./semesters.html"><img src="../../assets/calendar_today.png" alt="" width="30px" style="margin-left: 2px;">Semesters</a></li>
+            <li><a href="./reports.html"><img src="../../assets/content_copy.png" alt="" width="35px">Reports</a></li>
+        </ul>
+    </div>
+    </div>
+    <div class="main">
+        <div class="box">
+            <div class="bxtitle">Semesters</div>
+            <div class="bxmid">
+                <input id="semesterSearchInput" type="text" placeholder="Search semester..." style="display:none">
+            </div>
+            <div class="table">
+                <table id="semesterTable">
+                    <thead>
+                        <tr>
+                            <th>Semester ID</th>
+                            <th>Students</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script>
+        const API_BASE = 'http://localhost:4000/api';
+        const semesterTableBody = document.querySelector('#semesterTable tbody');
+        const searchInput = document.getElementById('semesterSearchInput');
+
+        function showNotification(message, type = 'success') {
+            const n = document.getElementById('notification');
+            n.textContent = message;
+            n.style.backgroundColor = type === 'error' ? '#ff4d4f' : '#8418ff';
+            n.classList.add('show');
+            setTimeout(() => n.classList.remove('show'), 3000);
+        }
+
+        async function fetchSemesters() {
+            try {
+                // fetch semesters and all students, then group students by semester id
+                const [semRes, stuRes] = await Promise.all([fetch(`${API_BASE}/semesters`), fetch(`${API_BASE}/students`)]);
+                if (!semRes.ok) throw new Error('Failed to fetch semesters');
+                if (!stuRes.ok) throw new Error('Failed to fetch students');
+                const semData = await semRes.json();
+                const stuData = await stuRes.json();
+                const semesters = semData.semesters || semData || [];
+                const students = stuData.students || stuData || [];
+
+                // map students by semester_id
+                const map = {};
+                students.forEach(s => {
+                    const sid = s.semester_id || s.semester || null;
+                    if (!sid) return;
+                    if (!map[sid]) map[sid] = [];
+                    map[sid].push(s);
+                });
+
+                renderSemesters(semesters, map);
+            } catch (err) {
+                console.error(err);
+                showNotification('Could not load semesters', 'error');
+            }
+        }
+
+        function renderSemesters(list, studentMap) {
+            semesterTableBody.innerHTML = '';
+            list.forEach(s => {
+                const tr = document.createElement('tr');
+                const id = s.id || s.semester_id || s.semesterId || '';
+                const students = studentMap[id] || [];
+                // display CMS and name for clarity
+                const studentsText = students.map(st => `${st.cms}${st.name ? ' - ' + st.name : ''}`).join(', ');
+                tr.innerHTML = `<td>${id}</td><td>${studentsText}</td>`;
+                semesterTableBody.appendChild(tr);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => fetchSemesters());
+    </script>
+</body>
+</html>

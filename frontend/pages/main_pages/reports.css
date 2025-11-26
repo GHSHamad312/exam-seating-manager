@@ -1,0 +1,218 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: sans-serif;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden; 
+}
+
+/* top */
+.top{
+    width: 100%;
+    height: 15%;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 35px;
+    box-shadow: 0 4px 5px rgb(121, 121, 121);
+    position: relative;
+    z-index: 13;
+}
+.image img{
+    width: 200px;
+}
+.pagedesc{
+    font-size: 24px;
+    font-weight: bold;
+
+}
+
+
+/* sidebar */
+.sidebar{
+    width: 17%;
+    height: 85%;
+    border-right: 1.5px solid black; 
+    float: left;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+.upperli ul{
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.upperli ul li a{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    color: gray;
+    font-size: 20px;
+}
+.upperli ul li{
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    width: 230px;
+    height: 60px;
+    border-radius: 20px;
+    transition: 200ms;
+}
+.upperli ul li:hover{
+    background-color: rgba(212, 82, 255, 0.16);
+    cursor: pointer;
+}
+
+/* main */
+.main{
+    width: 83%;
+    height: 85%;
+    float: right;
+    background-color: rgba(244, 250, 254, 1);
+    z-index: 2;
+    position: relative;
+    padding: 50px 50px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    align-content: center;
+    gap: 30px 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.box {
+    width: 90%;
+    height: 90%;
+    background-color: white;
+    margin: 20px auto;
+    border-radius: 20px;
+    box-shadow: 0 4px 5px rgb(121, 121, 121);
+    padding: 20px 20px;
+}
+
+.bxtitle {
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.bxmid {
+    width: 100%;
+    margin-top: 20px;
+
+}
+
+.bxmid button {
+    height: 40px;
+    width: 180px;
+    color: white;
+    border: 4px solid rgba(192, 65, 173, 1);
+    border-radius: 15px;
+    background-color: rgba(192, 65, 173, 1);
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.bxmid input {
+    font-size: 15px;
+    font-weight: 600;
+    height: 40px;
+    width: 80%;
+    border-radius: 10px;
+    color: gray;
+    border: 2px solid gray;
+    padding: 0px 15px;
+}
+
+.table{
+    margin-top: 20px;
+    height: 300px;
+    overflow: auto;
+}
+.table table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: sans-serif;
+    }
+
+.table thead {
+        background: #000;
+        color: white;
+    }
+
+.table th, td {
+        padding: 12px;
+        border: 1px solid #ccc;
+        text-align: left;
+    }
+
+  
+.table tbody tr:nth-child(odd) {
+        background: #f2f2f2;
+    }
+
+.table tbody tr:nth-child(even) {
+        background: #ffffff;
+    }
+
+
+.table tbody tr:hover {
+        background: #00000087;
+    }
+
+/* Buttons on reports page */
+.view-btn, .delete-btn {
+    display: inline-block;
+    padding: 8px 12px;
+    margin-right: 8px;
+    border-radius: 8px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+}
+.view-btn {
+    background: rgb(224, 18, 224);
+    color: white;
+    box-shadow: 0 2px 6px rgba(108,99,255,0.25);
+}
+.view-btn:hover { transform: translateY(-1px); }
+.delete-btn {
+    background: #ff6b6b;
+    color: white;
+    box-shadow: 0 2px 6px rgba(255,107,107,0.18);
+}
+.delete-btn:hover { transform: translateY(-1px); }
+.notification {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    padding: 15px 20px;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    background-color: #8418ff; /* default */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 9999; /* Keeps it above sidebar */
+}
+
+.notification.show {
+    opacity: 1;
+}
+
+/* Small responsive tweak for action buttons */
+@media (max-width: 700px) {
+    .view-btn, .delete-btn { padding: 6px 8px; font-size: 13px; }
+}

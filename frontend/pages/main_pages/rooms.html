@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExamSeatingPlanner</title>
+    <link rel="stylesheet" href="rooms.css">
+</head>
+<body>
+    <div class="top">
+        <div class="image">
+            <img src="../../assets/logocut.png" alt="">
+        </div>
+        <div class="pagedesc">Rooms</div>
+    </div>
+
+    <div class="sidebar">
+    <div class="upperli">
+            <ul>
+                 <li ><a href="./dashboard.html"><img src="../../assets/home.png" alt="" width="35px" >Dashboard</a></li>
+            <li><a href="./student.html"><img src="../../assets/Vector.png" alt="" width="25px" style="margin-left: 5px;">Students</a></li>
+            <li style="background-color: rgba(212, 82, 255, 0.16);"><a href="./rooms.html"><img src="../../assets/meeting_room.png" alt="" width="35px">Rooms</a></li>
+            <li><a href="./semesters.html"><img src="../../assets/calendar_today.png" alt="" width="30px" style="margin-left: 2px;">Semesters</a></li>
+            <li ><a href="./reports.html"><img src="../../assets/content_copy.png" alt="" width="35px">Reports</a></li>
+    </div>
+    </div>
+    <div class="main">
+           <div class="box">
+            <div class="bxtitle">Rooms Overview</div>
+            <div class="bxmid">
+                <button id="addNewRoomBtn">
+                    Add New Room
+                </button>
+                <input id="roomSearchInput" type="text" placeholder="Search room...">
+            </div>
+            <div class="table">
+                <table id="myTable">
+    <thead>
+        <tr>
+            <th>Room Name</th>
+            <th>Capacity</th>
+            <th>Columns</th>
+            <th>Availability</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td>Room 301</td>
+            <td>50</td>
+            <td>Available</td>
+            <td>
+                <button class="edit-btn" title="Edit">✎</button>
+                <button class="delete-btn" title="Delete">🗑</button>
+            </td>
+        </tr>
+        <tr>
+            <td>Room 302</td>
+            <td>40</td>
+            <td>Occupied</td>
+            <td>
+                <button class="edit-btn" title="Edit">✎</button>
+                <button class="delete-btn" title="Delete">🗑</button>
+            </td>
+        </tr>
+        <tr>
+            <td>Room 303</td>
+            <td>45</td>
+            <td>Available</td>
+            <td>
+                <button class="edit-btn" title="Edit">✎</button>
+                <button class="delete-btn" title="Delete">🗑</button>
+            </td>
+        </tr>
+        <tr>
+            <td>Room 304</td>
+            <td>55</td>
+            <td>Available</td>
+            <td>
+                <button class="edit-btn" title="Edit">✎</button>
+                <button class="delete-btn" title="Delete">🗑</button>
+            </td>
+        </tr>
+        <tr>
+            <td>Room 305</td>
+            <td>50</td>
+            <td>Occupied</td>
+            <td>
+                <button class="edit-btn" title="Edit">✎</button>
+                <button class="delete-btn" title="Delete">🗑</button>
+            </td>
+        </tr>
+        <tr>
+            <td>Room 306</td>
+            <td>48</td>
+            <td>Available</td>
+            <td>
+                <button class="edit-btn" title="Edit">✎</button>
+                <button class="delete-btn" title="Delete">🗑</button>
+            </td>
+        </tr>
+        <tr>
+            <td>Room 307</td>
+            <td>52</td>
+            <td>Available</td>
+            <td>
+                <button class="edit-btn" title="Edit">✎</button>
+                <button class="delete-btn" title="Delete">🗑</button>
+            </td>
+        </tr>
+        <tr>
+            <td>Room 308</td>
+            <td>60</td>
+            <td>Occupied</td>
+            <td>
+                <button class="edit-btn" title="Edit">✎</button>
+                <button class="delete-btn" title="Delete">🗑</button>
+            </td>
+        </tr>
+        <tr>
+            <td>Room 309</td>
+            <td>42</td>
+            <td>Available</td>
+            <td>
+                <button class="edit-btn" title="Edit">✎</button>
+                <button class="delete-btn" title="Delete">🗑</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD NEW ROOM MODAL -->
+    <div id="addRoomModal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div class="modal-header">Add New Room</div>
+
+            <form id="roomForm">
+                <label for="roomName">Room Name</label>
+                <input type="text" id="roomName" name="name" required placeholder="Enter room name (e.g., Room 301)">
+
+                <label for="roomCapacity">Capacity</label>
+                <input type="number" id="roomCapacity" name="capacity" required placeholder="Enter room capacity" min="1">
+
+                <label for="roomCol">Number of Columns</label>
+                <input type="number" id="roomCol" name="roomcol" required placeholder="Enter number of columns" min="1" value="8">
+
+                <label for="roomAvailability">Availability</label>
+                <select id="roomAvailability" name="availability" required>
+                    <option value="">Select Availability</option>
+                    <option value="Available">Available</option>
+                    <option value="Occupied">Occupied</option>
+                </select>
+
+                <div class="modal-buttons">
+                    <button type="button" class="cancel-btn">Cancel</button>
+                    <button type="submit" class="confirm-btn">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION -->
+    <div id="notification" class="notification"></div>
+
+    <script>
+        const API_BASE = 'http://localhost:4000/api';
+        const modal = document.getElementById("addRoomModal");
+        const addBtn = document.getElementById("addNewRoomBtn");
+        const closeBtn = document.querySelector(".close-btn");
+        const cancelBtn = document.querySelector(".cancel-btn");
+        const roomForm = document.getElementById("roomForm");
+        const notification = document.getElementById("notification");
+        const tbody = document.querySelector('#myTable tbody');
+        const searchInput = document.getElementById('roomSearchInput');
+        const roomNameInput = document.getElementById('roomName');
+
+        let editingRoomNumber = null;
+
+        function openModal() { modal.style.display = 'block'; roomForm.reset(); }
+        function closeModal() { modal.style.display = 'none'; editingRoomNumber = null; roomNameInput.disabled = false; document.querySelector('#roomForm .confirm-btn').textContent = 'Submit'; }
+
+        function showNotification(message, type = 'success') {
+            notification.textContent = message;
+            notification.style.backgroundColor = (type === 'error') ? '#ff4d4f' : '#8418ff';
+            notification.classList.add('show');
+            setTimeout(() => notification.classList.remove('show'), 3000);
+        }
+
+        async function fetchRooms(q) {
+            try {
+                const url = q ? `${API_BASE}/rooms/search?q=${encodeURIComponent(q)}` : `${API_BASE}/rooms`;
+                const res = await fetch(url);
+                if (!res.ok) throw new Error('Failed to fetch rooms');
+                const data = await res.json();
+                renderRooms(data.rooms || data.rooms || data);
+            } catch (err) {
+                console.error(err);
+                showNotification('Could not load rooms', 'error');
+            }
+        }
+
+        function renderRooms(list) {
+            const rooms = Array.isArray(list) ? list : (list.rooms || []);
+            tbody.innerHTML = '';
+            rooms.forEach(r => {
+                const tr = document.createElement('tr');
+                const nameTd = document.createElement('td'); nameTd.textContent = r.room_name || r.room_number || '';
+                const capTd = document.createElement('td'); capTd.textContent = r.capacity || '';
+                const colTd = document.createElement('td'); colTd.textContent = r.roomcol || '8';
+                const availTd = document.createElement('td'); availTd.textContent = (r.availability == 1 || r.availability === '1' || r.availability === true) ? 'Available' : 'Occupied';
+                const actionsTd = document.createElement('td');
+
+                const editBtn = document.createElement('button'); editBtn.className = 'edit-btn'; editBtn.title = 'Edit'; editBtn.textContent = '✎';
+                const delBtn = document.createElement('button'); delBtn.className = 'delete-btn'; delBtn.title = 'Delete'; delBtn.textContent = '🗑';
+
+                editBtn.addEventListener('click', () => startEditRoom(r));
+                delBtn.addEventListener('click', () => deleteRoom(r.room_number || r.room_name, tr));
+
+                actionsTd.appendChild(editBtn); actionsTd.appendChild(delBtn);
+
+                tr.appendChild(nameTd); tr.appendChild(capTd); tr.appendChild(colTd); tr.appendChild(availTd); tr.appendChild(actionsTd);
+                tbody.appendChild(tr);
+            });
+        }
+
+        function startEditRoom(r) {
+            editingRoomNumber = r.room_number || r.room_name;
+            roomNameInput.value = r.room_name || r.room_number || '';
+            document.getElementById('roomCapacity').value = r.capacity || '';
+            document.getElementById('roomCol').value = r.roomcol || '8';
+            document.getElementById('roomAvailability').value = (r.availability == 1 || r.availability === '1' || r.availability === true) ? 'Available' : 'Occupied';
+            // Allow editing the room name/number (user may want to rename or change identifier)
+            roomNameInput.disabled = false;
+            document.querySelector('#roomForm .confirm-btn').textContent = 'Update';
+            openModal();
+        }
+
+        async function deleteRoom(roomNumber, rowEl) {
+            if (!confirm('Are you sure you want to delete this room?')) return;
+            try {
+                const res = await fetch(`${API_BASE}/rooms/${encodeURIComponent(roomNumber)}`, { method: 'DELETE' });
+                if (!res.ok) throw new Error('Delete failed');
+                rowEl.remove();
+                showNotification('Room deleted successfully!');
+            } catch (err) {
+                console.error(err);
+                showNotification('Failed to delete room', 'error');
+            }
+        }
+
+        // events
+        addBtn.addEventListener('click', () => { editingRoomNumber = null; roomNameInput.disabled = false; document.querySelector('#roomForm .confirm-btn').textContent = 'Submit'; openModal(); });
+        closeBtn.addEventListener('click', closeModal);
+        cancelBtn.addEventListener('click', closeModal);
+        window.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+        roomForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const roomNameVal = document.getElementById('roomName').value;
+            const payload = {
+                room_number: roomNameVal,
+                room_name: roomNameVal,
+                capacity: Number(document.getElementById('roomCapacity').value),
+                roomcol: Number(document.getElementById('roomCol').value),
+                availability: document.getElementById('roomAvailability').value
+            };
+            try {
+                let res;
+                if (editingRoomNumber) {
+                    res = await fetch(`${API_BASE}/rooms/${encodeURIComponent(editingRoomNumber)}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                } else {
+                    res = await fetch(`${API_BASE}/rooms`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                }
+                if (res.ok) {
+                    showNotification(editingRoomNumber ? 'Room updated' : 'Room added successfully!');
+                    closeModal();
+                    await fetchRooms();
+                } else {
+                    const err = await res.json();
+                    showNotification(err.error || 'Failed', 'error');
+                }
+            } catch (err) {
+                console.error(err);
+                showNotification('Error connecting to backend', 'error');
+            }
+        });
+
+        searchInput.addEventListener('input', (e) => {
+            const q = e.target.value.trim(); if (!q) fetchRooms(); else fetchRooms(q);
+        });
+
+        document.addEventListener('DOMContentLoaded', () => fetchRooms());
+    </script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExamSeatingPlanner</title>
+    <link rel="stylesheet" href="reports.css">
+</head>
+<body>
+    <div class="top">
+        <div class="image">
+            <img src="../../assets/logocut.png" alt="">
+        </div>
+        <div class="pagedesc">Reports</div>
+    </div>
+
+    <div class="sidebar">
+    <div class="upperli">
+            <ul>
+                 <li ><a href="./dashboard.html"><img src="../../assets/home.png" alt="" width="35px" >Dashboard</a></li>
+            <li><a href="./student.html"><img src="../../assets/Vector.png" alt="" width="25px" style="margin-left: 5px;">Students</a></li>
+            <li><a href="./rooms.html"><img src="../../assets/meeting_room.png" alt="" width="35px">Rooms</a></li>
+            <li><a href="./semesters.html"><img src="../../assets/calendar_today.png" alt="" width="30px" style="margin-left: 2px;">Semesters</a></li>
+            <li style="background-color: rgba(212, 82, 255, 0.16);"><a href="./reports.html"><img src="../../assets/content_copy.png" alt="" width="35px">Reports</a></li>
+        </ul>
+    </div>
+    </div>
+    <div class="main">
+        <div class="box">
+            <div class="bxtitle">Reports</div>
+            <div class="bxmid">
+                <div id="counts">
+                    <span id="countStudents">Students: -</span>
+                    <span id="countRooms">Rooms: -</span>
+                    <span id="countSemesters">Semesters: -</span>
+                </div>
+            </div>
+            <div class="table">
+                <table id="reportsTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Semester</th>
+                            <th>Room</th>
+                            <th>Student(s)</th>
+                            <th>Created</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script>
+        const API_BASE = 'http://localhost:4000/api';
+        const reportsBody = document.querySelector('#reportsTable tbody');
+        const countStudentsEl = document.getElementById('countStudents');
+        const countRoomsEl = document.getElementById('countRooms');
+        const countSemestersEl = document.getElementById('countSemesters');
+
+        function showNotification(message, type = 'success') {
+            const n = document.getElementsByClassName('notification')[0];
+            n.textContent = message;
+           n.style.backgroundColor = (type === 'error') ? '#ff4d4f' : '#8418ff';
+            n.classList.add('show');
+            setTimeout(() => n.classList.remove('show'), 3000);
+        }
+
+        async function loadCounts() {
+            try {
+                const students = await fetch(`${API_BASE}/students`).then(r => r.json());
+                const rooms = await fetch(`${API_BASE}/rooms`).then(r => r.json());
+                const semesters = await fetch(`${API_BASE}/semesters`).then(r => r.json());
+                countStudentsEl.textContent = `Students: ${students.count || (students.length || '-')}`;
+                countRoomsEl.textContent = `Rooms: ${rooms.count || (rooms.length || '-')}`;
+                countSemestersEl.textContent = `Semesters: ${semesters.count || (semesters.length || '-')}`;
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function loadReports() {
+            try {
+                const res = await fetch(`${API_BASE}/seating-plans`);
+                if (!res.ok) throw new Error('Failed');
+                const data = await res.json();
+                renderReports(data.plans || data);
+            } catch (err) {
+                console.error(err);
+                showNotification('Could not load reports', 'error');
+            }
+        }
+
+        function renderReports(list) {
+            reportsBody.innerHTML = '';
+            list.forEach(p => {
+                const tr = document.createElement('tr');
+                const studentsText = p.studentIds ? (Array.isArray(p.studentIds) ? p.studentIds.join(', ') : p.studentIds) : (p.student_cms || p.studentCms || '');
+                tr.innerHTML = `<td>${p.seating_plan_id || p.id || ''}</td><td>${p.semester_id || ''}</td><td>${p.room_number || ''}</td><td>${studentsText}</td><td>${p.createdAt || p.created_at || ''}</td><td></td>`;
+                const actionsTd = tr.querySelector('td:last-child');
+                const viewBtn = document.createElement('button'); viewBtn.textContent = 'View PDF'; viewBtn.className = 'view-btn';
+                const delBtn = document.createElement('button'); delBtn.textContent = 'Delete'; delBtn.className = 'delete-btn';
+                viewBtn.addEventListener('click', () => viewPDF(p));
+                delBtn.addEventListener('click', () => deletePlan(p.seating_plan_id || p.id, tr));
+                actionsTd.appendChild(viewBtn); actionsTd.appendChild(delBtn);
+                reportsBody.appendChild(tr);
+            });
+        }
+
+        async function viewPDF(plan) {
+            try {
+                let students = [];
+                if (plan.studentIds) {
+                    students = Array.isArray(plan.studentIds) ? plan.studentIds : JSON.parse(plan.studentIds || '[]');
+                } else if (plan.student_cms) {
+                    students = [plan.student_cms];
+                } else if (plan.studentCms) {
+                    students = [plan.studentCms];
+                }
+
+                const payload = { rooms: [plan.room_number], students };
+                const res = await fetch(`${API_BASE}/seating-plans/generate`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                if (!res.ok) {
+                    const err = await res.json();
+                    showNotification(err.error || 'Failed to generate PDF', 'error');
+                    return;
+                }
+                const blob = await res.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url; a.download = 'seating-plan.pdf';
+                document.body.appendChild(a); a.click(); a.remove();
+                window.URL.revokeObjectURL(url);
+            } catch (err) {
+                console.error(err);
+                showNotification('Error generating PDF', 'error');
+            }
+        }
+
+        async function deletePlan(id, rowEl) {
+            if (!confirm('Delete this seating plan?')) return;
+            try {
+                const res = await fetch(`${API_BASE}/seating-plans/${id}`, { method: 'DELETE' });
+                if (!res.ok) throw new Error('Delete failed');
+                rowEl.remove();
+                showNotification('Seating plan deleted');
+            } catch (err) {
+                console.error(err);
+                showNotification('Failed to delete seating plan', 'error');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => { loadCounts(); loadReports(); });
+    </script>
+</body>
+</html>

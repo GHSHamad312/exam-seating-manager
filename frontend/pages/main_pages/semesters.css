@@ -1,0 +1,199 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: sans-serif;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden; 
+}
+
+/* top */
+.top{
+    width: 100%;
+    height: 15%;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 35px;
+    box-shadow: 0 4px 5px rgb(121, 121, 121);
+    position: relative;
+    z-index: 13;
+}
+.image img{
+    width: 200px;
+}
+.pagedesc{
+    font-size: 24px;
+    font-weight: bold;
+
+}
+
+
+/* sidebar */
+.sidebar{
+    width: 17%;
+    height: 85%;
+    border-right: 1.5px solid black; 
+    float: left;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+.upperli ul{
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.upperli ul li a{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    color: gray;
+    font-size: 20px;
+}
+.upperli ul li{
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    width: 230px;
+    height: 60px;
+    border-radius: 20px;
+    transition: 200ms;
+}
+.upperli ul li:hover{
+    background-color: rgba(212, 82, 255, 0.16);
+    cursor: pointer;
+}
+
+/* main */
+.main{
+    width: 83%;
+    height: 85%;
+    float: right;
+    background-color: rgba(244, 250, 254, 1);
+    z-index: 2;
+    position: relative;
+    padding: 50px 50px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    align-content: center;
+    gap: 30px 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.box {
+    width: 90%;
+    height: auto;
+    background-color: white;
+    margin: 20px auto;
+    border-radius: 20px;
+    box-shadow: 0 4px 5px rgb(121, 121, 121);
+    padding: 20px 20px;
+}
+
+.bxtitle {
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.bxmid {
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: space-between;
+}
+
+.bxmid input {
+    font-size: 15px;
+    font-weight: 600;
+    height: 40px;
+    border-radius: 10px;
+    color: gray;
+    border: 2px solid gray;
+    padding: 0px 15px;
+}
+
+.table{
+    margin-top: 20px;
+    height: 400px;
+    overflow: auto;
+}
+
+.table table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: sans-serif;
+}
+
+.table thead {
+    background: #000;
+    color: white;
+}
+
+.table th, td {
+    padding: 12px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+.table tbody tr:nth-child(odd) {
+    background: #f2f2f2;
+}
+
+.table tbody tr:nth-child(even) {
+    background: #ffffff;
+}
+
+.table tbody tr:hover {
+    background: #00000087;
+}
+
+/* Semesters table styles */
+#semesterTable {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 6px;
+    overflow: hidden;
+}
+#semesterTable thead th {
+    background: #f7f7fb;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    color: #333;
+    border-bottom: 1px solid #e6e6ef;
+}
+#semesterTable tbody td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #f1f1f6;
+    color: #444;
+}
+#semesterTable tbody tr:hover {
+    background: rgba(212,82,255,0.04);
+}
+
+.bxmid input[type="text"] { /* slightly larger and centered within box */
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    width: 320px;
+}
+
+@media (max-width: 900px) {
+    .main { padding: 20px; }
+    .bxmid input[type="text"] { width: 160px; }
+    #semesterTable thead th, #semesterTable tbody td { padding: 8px 10px; }
+}

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExamSeatingPlanner</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <div class="top">
+        <div class="image">
+            <img src="../../assets/logocut.png" alt="">
+        </div>
+        <div class="pagedesc">Dashboard</div>
+        <button id="logoutBtn" class="logout-btn">Logout</button>
+    </div>
+
+    <div class="sidebar">
+    <div class="upperli">
+            <ul>
+            <li style="background-color: rgba(212, 82, 255, 0.16);"><a href="./dashboard.html"><img src="../../assets/home.png" alt="" width="35px" >Dashboard</a></li>
+            <li><a href="./student.html"><img src="../../assets/Vector.png" alt="" width="25px" style="margin-left: 5px;">Students</a></li>
+            <li><a href="./rooms.html"><img src="../../assets/meeting_room.png" alt="" width="35px">Rooms</a></li>
+            <li><a href="./semesters.html"><img src="../../assets/calendar_today.png" alt="" width="30px" style="margin-left: 2px;">Semesters</a></li>
+            <li><a href="./reports.html"><img src="../../assets/content_copy.png" alt="" width="35px">Reports</a></li>
+        </ul>
+    </div>
+    </div>
+    <div class="main">
+        <div class="upper shadow" id="plan">
+            <div class="uptitle">New Seating Plan</div>
+            <div class="updesc">Quickly create a new seating plan and keep on moving!!</div>
+            <div class="confbut"><button>Create New Plan</button></div>
+        </div>
+        <div class="upper shadow" id="upcoming">
+            <div class="comingtitle">Exam Reports</div>
+            <ul id="exams" class="reports-list">
+                <!-- recent reports loaded dynamically -->
+            </ul>
+            <div class="expage"><a href="./reports.html">View reports</a></div>
+        </div>
+        <div class="middle shadow" id="first" >
+            <div class="midtitle">Students Overview</div>
+            <div class="midnum" id="studentsCount">...</div>
+            <div class="middesc">Students Available</div>
+            <div class="midlink"><a href="./student.html">View students</a></div>
+        </div>
+        <div class="middle shadow" id="second">
+            <div class="midtitle">Rooms Available</div>
+            <div class="midnum" id="roomsCount">...</div>
+            <div class="middesc">Rooms currently free</div>
+            <div class="midlink"><a href="./rooms.html">View Rooms</a></div>
+        </div>
+        <div class="middle shadow" id="third">
+            <div class="midtitle">Semesters Available</div>
+            <div class="midnum" id="semestersCount">...</div>
+            <div class="middesc">Currently Studying</div>
+            <div class="midlink"><a href="./semesters.html">View semesters</a></div>
+        </div>
+
+        <div class="lower shadow">
+            <div class="midtitle">Notifications</div>
+            <ul class="notilist">
+                <li>item1</li>
+                <li>item1</li>
+                <li>item1</li>
+                <li>item1</li>
+                <li>item1</li>
+                <li>item1</li>
+                <li>item1</li>
+            </ul>
+        </div>
+    </div>
+
+  <!-- SEATING PLAN MODAL -->
+    <div id="seatingPlanModal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div class="modal-header">Create New Seating Plan</div>
+            <form id="seatingPlanForm">
+                <label for="roomSelect">Select Rooms</label>
+                <select id="roomSelect" name="rooms" multiple required></select>
+
+                <label for="studentSearch">Search Students</label>
+                <input type="text" id="studentSearch" placeholder="Search by name or CMS">
+
+                <div id="studentButtons">
+                    <button type="button" id="selectAllBtn">Select All</button>
+                    <button type="button" id="deselectAllBtn">Deselect All</button>
+                </div>
+
+                <div id="studentList">
+                    <!-- Students loaded dynamically -->
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="button" class="cancel-btn">Cancel</button>
+                    <button type="submit" class="confirm-btn">Generate Plan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION -->
+    <div id="notification" class="notification"></div>
+
+   <script>
+                // -----------------------------
+                // DASHBOARD COUNTS (ONLY 3 BOXES)
+                // -----------------------------
+                async function updateDashboardCounts() {
+                    try {
+                        const [students, rooms, semesters] = await Promise.all([
+                            fetch('http://localhost:4000/api/students').then(r => r.json()),
+                            fetch('http://localhost:4000/api/rooms').then(r => r.json()),
+                            fetch('http://localhost:4000/api/semesters').then(r => r.json()),
+                        ]);
+                        document.getElementById('studentsCount').textContent = students.count ?? (students.students ? students.students.length : '0');
+                        document.getElementById('roomsCount').textContent = rooms.count ?? (rooms.rooms ? rooms.rooms.length : '0');
+                        document.getElementById('semestersCount').textContent = semesters.count ?? (semesters.semesters ? semesters.semesters.length : '0');
+                    } catch (err) {
+                        document.getElementById('studentsCount').textContent = '?';
+                        document.getElementById('roomsCount').textContent = '?';
+                        document.getElementById('semestersCount').textContent = '?';
+                    }
+                }
+                document.addEventListener('DOMContentLoaded', updateDashboardCounts);
+                // -----------------------------
+                // LOAD RECENT REPORTS
+                // -----------------------------
+                async function loadRecentReports() {
+                    try {
+                        const res = await fetch('http://localhost:4000/api/seating-plans');
+                        if (!res.ok) return;
+                        const data = await res.json();
+                        const list = data.plans || data || [];
+                        const ul = document.getElementById('exams');
+                        ul.innerHTML = '';
+                        // show up to 5 recent reports
+                        list.slice(0,5).forEach(p => {
+                            const id = p.seating_plan_id || p.id || '';
+                            const created = p.createdAt || p.created_at || p.created || '';
+                            let dateText = '';
+                            if (created) {
+                                const d = new Date(created);
+                                if (!isNaN(d)) dateText = d.toLocaleString();
+                                else dateText = created;
+                            }
+                            const li = document.createElement('li');
+                            li.textContent = `${id} — ${dateText}`;
+                            ul.appendChild(li);
+                        });
+                    } catch (err) {
+                        console.error('Could not load recent reports', err);
+                    }
+                }
+
+                document.addEventListener('DOMContentLoaded', () => { loadRecentReports(); updateDashboardCounts(); });
+        // -----------------------------
+        // ELEMENT REFERENCES
+        // -----------------------------
+        const modal = document.getElementById("seatingPlanModal");
+        const openModalBtn = document.querySelector("#plan .confbut button");
+        const closeModalBtn = document.querySelector(".close-btn");
+        const cancelBtn = document.querySelector(".cancel-btn");
+        const seatingPlanForm = document.getElementById('seatingPlanForm');
+        const confirmBtn = document.querySelector(".confirm-btn");
+
+        const studentSearch = document.getElementById('studentSearch');
+        const studentList = document.getElementById('studentList');
+        const selectAllBtn = document.getElementById('selectAllBtn');
+        const deselectAllBtn = document.getElementById('deselectAllBtn');
+        const notification = document.getElementById('notification');
+
+        // -----------------------------
+        // MODAL OPEN / CLOSE
+        // -----------------------------
+        openModalBtn.onclick = () => modal.style.display = "block";
+        closeModalBtn.onclick = () => modal.style.display = "none";
+        cancelBtn.onclick = () => modal.style.display = "none";
+        window.onclick = (event) => { if(event.target == modal) modal.style.display = "none"; };
+
+        // -----------------------------
+        // STUDENT SEARCH FILTER
+        // -----------------------------
+        studentSearch.addEventListener('input', () => {
+            const filter = studentSearch.value.toLowerCase();
+            const labels = studentList.getElementsByTagName('label');
+            for (let label of labels) {
+                const text = label.textContent.toLowerCase();
+                label.style.display = text.includes(filter) ? '' : 'none';
+            }
+        });
+
+        // -----------------------------
+        // SELECT / DESELECT ALL
+        // -----------------------------
+        selectAllBtn.addEventListener('click', () => {
+            studentList.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                if(cb.parentElement.style.display !== 'none') cb.checked = true;
+            });
+        });
+
+        deselectAllBtn.addEventListener('click', () => {
+            studentList.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                if(cb.parentElement.style.display !== 'none') cb.checked = false;
+            });
+        });
+
+        // -----------------------------
+        // TOAST NOTIFICATION
+        // -----------------------------
+        function showNotification(message, type='success') {
+            notification.textContent = message;
+            notification.style.backgroundColor = (type==='error') ? '#ff4d4f' : '#8418ff';
+            notification.classList.add('show');
+            setTimeout(() => notification.classList.remove('show'), 3000);
+        }
+
+        // -----------------------------
+        // GENERATE PLAN - SEND REQUEST
+        // -----------------------------
+        seatingPlanForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const selectedRooms = Array.from(document.getElementById("roomSelect").selectedOptions).map(opt => opt.value);
+            const selectedStudents = Array.from(studentList.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
+
+            if(selectedRooms.length === 0 || selectedStudents.length === 0){
+                showNotification('Please select at least one room and one student', 'error');
+                return;
+            }
+
+            const payload = { rooms: selectedRooms, students: selectedStudents };
+
+            try {
+                const response = await fetch('http://localhost:4000/api/seating-plans/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if(response.ok){
+                    // Download PDF
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'seating-plan.pdf';
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    window.URL.revokeObjectURL(url);
+                    showNotification('Seating plan PDF generated!');
+                } else {
+                    showNotification('Failed to generate seating plan', 'error');
+                }
+            } catch(error) {
+                console.error(error);
+                showNotification('Error connecting to backend', 'error');
+            }
+
+            modal.style.display = "none";
+        });
+            // -----------------------------
+            // DYNAMICALLY LOAD ROOMS AND STUDENTS
+            // -----------------------------
+            async function loadRooms() {
+                const select = document.getElementById('roomSelect');
+                select.innerHTML = '';
+                try {
+                    const res = await fetch('http://localhost:4000/api/rooms');
+                    if (!res.ok) throw new Error('Failed to fetch rooms');
+                    const data = await res.json();
+                    (data.rooms || data).forEach(r => {
+                        const opt = document.createElement('option');
+                        opt.value = r.room_number || r.room_name;
+                        opt.textContent = r.room_name || r.room_number;
+                        select.appendChild(opt);
+                    });
+                } catch (err) {
+                    select.innerHTML = '<option disabled>Could not load rooms</option>';
+                }
+            }
+
+            async function loadStudents() {
+                studentList.innerHTML = '';
+                try {
+                    const res = await fetch('http://localhost:4000/api/students');
+                    if (!res.ok) throw new Error('Failed to fetch students');
+                    const data = await res.json();
+                    (data.students || data).forEach(s => {
+                        const label = document.createElement('label');
+                        const cb = document.createElement('input');
+                        cb.type = 'checkbox';
+                        cb.value = s.cms;
+                        label.appendChild(cb);
+                        label.appendChild(document.createTextNode(' ' + s.name));
+                        studentList.appendChild(label);
+                    });
+                } catch (err) {
+                    studentList.innerHTML = '<div style="color:red">Could not load students</div>';
+                }
+            }
+
+            openModalBtn.addEventListener('click', () => {
+                loadRooms();
+                loadStudents();
+            });
+
+            // LOGOUT FUNCTIONALITY
+            document.getElementById('logoutBtn').addEventListener('click', () => {
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('userName');
+                window.location.href = 'http://127.0.0.1:3000/frontend/pages/landing_page/landing.html';
+            });
+    </script>
+</body>
+</html>

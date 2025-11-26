@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sign Up</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <!-- Remix Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+  <main class="page">
+    <section class="card" >
+      <h1 class="title">Login</h1>
+
+      <form id="loginForm">
+        <label class="label" for="loginEmail">Email</label>
+        <div class="input-wrap">
+          <input id="loginEmail" name="email" type="email" placeholder="you@example.com" required autocomplete="email">
+          <i class="ri-mail-line input-icon" aria-hidden="true"></i>
+        </div>
+
+        <div class="label-row">
+          <label class="label" for="loginPassword">Password</label>
+        </div>
+
+        <div class="input-wrap">
+          <input id="loginPassword" name="password" type="password" placeholder="Your password" required autocomplete="current-password" minlength="8">
+          <i class="ri-lock-2-line input-icon" aria-hidden="true"></i>
+        </div>
+
+        <button type="submit" class="btn primary">Login</button>
+
+        <div class="alt-row">
+          <span>Don't have an account?</span>
+          <a class="btn-link" href="../main_pages/resgister.html">Create account</a>
+        </div>
+      </form>
+      <script>
+        const API_BASE = 'http://localhost:4000/api';
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const email = document.getElementById('loginEmail').value.trim();
+          const password = document.getElementById('loginPassword').value;
+          try {
+            const res = await fetch(`${API_BASE}/auth/login`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email, password })
+            });
+            const data = await res.json();
+            if (res.ok) {
+              localStorage.setItem('authToken', data.token);
+              localStorage.setItem('userName', data.user.name);
+              window.location.href = 'http://127.0.0.1:3000/frontend/pages/main_pages/dashboard.html';
+            } else {
+              alert(data.error || 'Login failed');
+            }
+          } catch (err) {
+            alert('Connection error. Please try again.');
+          }
+        });
+      </script>
+    </section>
+  </main>
+</body>
+</html>

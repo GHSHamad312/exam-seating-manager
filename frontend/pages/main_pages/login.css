@@ -1,0 +1,155 @@
+/* signup.css - simple responsive sign-up form (matches your theme) */
+
+:root{
+  --bg: #d5e1f0;
+  --card: #F7FBFF;
+  --muted: #9AA4B2;
+  --border: #E0E6ED;
+  --accent-1: #E041A7;
+  --accent-2: #A831F0;
+  --link: #0066CC;
+  --text: #111;
+  --radius: 12px;
+  --card-w: 420px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+.page{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:32px;
+}
+
+/* Card */
+.card{
+  width:100%;
+  max-width:var(--card-w);
+  background:var(--card);
+  border-radius:16px;
+  padding:36px 28px;
+  box-shadow:0 6px 28px rgba(11,20,45,0.06);
+}
+
+/* Title */
+.title{
+  font-size:22px;
+  font-weight:700;
+  margin-bottom:20px;
+}
+
+/* Labels & layout */
+.label{
+  display:block;
+  font-size:13px;
+  margin-bottom:6px;
+  color:var(--text);
+  font-weight:600;
+}
+
+.label-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:8px;
+}
+
+/* Forgot link */
+.forgot{
+  font-size:13px;
+  color:var(--link);
+  text-decoration:none;
+}
+.forgot:focus,
+.forgot:hover{
+  text-decoration:underline;
+}
+
+/* Input wrapper */
+.input-wrap{
+  position:relative;
+  margin-bottom:16px;
+}
+
+.input-wrap input{
+  width:100%;
+  height:48px;
+  padding:12px 44px 12px 14px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:#fff;
+  font-size:14px;
+  color:var(--text);
+  outline:none;
+}
+.input-wrap input::placeholder{ color: var(--muted); }
+
+.input-icon{
+  position:absolute;
+  right:14px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:20px;
+  color:var(--muted);
+  pointer-events:none;
+}
+
+/* Primary button */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  height:48px;
+  border-radius:10px;
+  border:0;
+  font-weight:600;
+  cursor:pointer;
+  font-size:15px;
+  margin-top:8px;
+}
+
+.btn.primary{
+  color:#fff;
+  background: #C041AD;;
+  box-shadow: 0 6px 18px rgba(168,49,240,0.14);
+}
+
+.btn.primary:active{ transform:translateY(1px); }
+.btn.primary:focus{ outline:2px solid rgba(168,49,240,0.18); }
+
+/* Alt row (login link) */
+.alt-row{
+  margin-top:14px;
+  display:flex;
+  gap:8px;
+  align-items:center;
+  justify-content:center;
+  font-size:14px;
+  color:#555;
+}
+
+.btn-link{
+  color:var(--link);
+  text-decoration:none;
+  font-weight:600;
+}
+.btn-link:focus,
+.btn-link:hover{ text-decoration:underline; }
+
+/* Small screens */
+@media (max-width:480px){
+  .card{ padding:28px; border-radius:12px; }
+  .title{ font-size:20px; }
+  .input-wrap input{ height:46px; }
+}
