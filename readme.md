@@ -79,14 +79,6 @@ The **Exam Seating Plan Manager** solves the logistical nightmare of manual exam
 | <img src="images/plan%20generation.jpeg" width="400" alt="Plan Generation"> | <img src="images/output.png" width="400" alt="Output"> |
 | *Input constraints* | *Final grid layout* |
 
-<div align="center">
-  <strong>Reports Generation</strong><br>
-  <img src="images/reports.jpg" width="60%" alt="Reports">
-  <br>
-  <em>Exportable lists for notice boards</em>
-</div>
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ---
 
