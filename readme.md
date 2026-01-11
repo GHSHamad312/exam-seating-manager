@@ -1,110 +1,173 @@
-# **Exam Seating Plan Manager**
+<div align="center">
 
-A comprehensive web-based application designed to automate the generation of conflict-free exam seating arrangements. This system streamlines the administrative task of allocating seats by managing students, rooms, and departments, ensuring academic integrity through intelligent algorithmic placement.
+  <br />
+  <img src="./frontend/assets/logo-placeholder.png" alt="Project Logo" width="120" height="120">
+  <h1 align="center">Exam Seating Plan Manager</h1>
 
-\<\!-- VIDEO DEMO PLACEHOLDER \--\>
+  <p align="center">
+    A comprehensive, automated solution for academic examination logistics.
+    <br />
+    <a href="#-project-demo"><strong>View Demo</strong></a> ·
+    <a href="#-features"><strong>Explore Features</strong></a> ·
+    <a href="#-installation--setup"><strong>Installation</strong></a>
+  </p>
+  
+  <p align="center">
+    <img src="https://img.shields.io/badge/Node.js-v14+-green?style=flat&logo=node.js" alt="Node Version">
+    <img src="https://img.shields.io/badge/Database-MySQL-blue?style=flat&logo=mysql" alt="DB">
+    <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat" alt="License">
+    <img src="https://img.shields.io/badge/Status-Maintained-orange?style=flat" alt="Status">
+  </p>
+</div>
 
-## **🎥 Project Demo**
+<br />
 
-[**Click here to watch the Project Demo Video**](https://www.youtube.com/watch?v=jYxsA4et9a4&feature=youtu.be)
+![Application Banner](path/to/your/banner-image.png)
+*(Replace this text with a banner screenshot of your application)*
 
-## **🚀 Features**
+## 📖 About The Project
 
-### **Core Functionality**
+The **Exam Seating Plan Manager** is a web-based application built to streamline the complex administrative task of allocating exam seats. By managing students, rooms, and departments, the system uses intelligent algorithms to ensure **academic integrity** by generating conflict-free seating arrangements.
 
-* **Automated Seating Generation:** Algorithms ensure that no two students from the same department or semester are seated adjacent to each other to prevent cheating.  
-* **PDF Export:** Generate and download professional PDF reports of the final seating plan for printing and notice boards.  
-* **Conflict Resolution:** Automatic handling of room capacities and student distribution.
+---
 
-### **Administrative Management (CRUD)**
+## 🎥 Project Demo
 
-* **Student Management:** Add, update, and delete student records (Names, Roll Numbers, Semesters).  
-* **Room Management:** Configure classrooms with specific row/column capacities and availability status.  
-* **Department Management:** Organize students by their respective academic departments.
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=jYxsA4et9a4&feature=youtu.be">
+    <img src="https://img.youtube.com/vi/jYxsA4et9a4/0.jpg" alt="Watch the Demo" style="width:100%;">
+  </a>
+  <br>
+  <b>🔴 Click the image above to watch the full walkthrough</b>
+</div>
 
-### **Authentication**
+---
 
-* Secure Admin Login and Registration system to protect sensitive data.
+## 📸 Screenshots
 
-## **🛠️ Tech Stack**
+| **Admin Dashboard** | **Seating Generation** |
+|:---:|:---:|
+| ![Dashboard](path/to/dashboard-screenshot.png) | ![Seating](path/to/seating-screenshot.png) |
+| *Overview of system stats* | *Conflict-free allocation* |
 
-**Backend**
+| **Student Management** | **PDF Export** |
+|:---:|:---:|
+| ![Student Mgmt](path/to/student-screenshot.png) | ![PDF](path/to/pdf-screenshot.png) |
+| *CRUD operations for students* | *Print-ready reports* |
 
-* **Node.js**: Runtime environment.  
-* **Express.js**: Web framework for API routing and middleware.  
-* **MySQL**: Relational database for storing entities.  
-* **Dotenv**: Environment variable management.
+---
 
-**Frontend**
+## 🚀 Features
 
-* **HTML5 & CSS3**: Structure and styling.  
-* **Vanilla JavaScript**: Client-side logic (Embedded directly within HTML files for modularity).  
-* **Note:** The application is currently **Desktop Optimized**.
+### 🧠 Core Functionality
+* **🧩 Automated Seating Algorithm:** Ensures no two students from the same department or semester sit adjacent to each other.
+* **📄 PDF Export:** One-click generation of professional seating plans for printing and notice boards.
+* **⚖️ Conflict Resolution:** Smart handling of room capacities and student distribution.
 
-## **📂 Project Structure**
+### 🛠 Administrative Control (CRUD)
+* **🎓 Student Management:** Add/Update/Delete records (Names, Roll Nos, Semesters).
+* **🏫 Room Management:** Configure classrooms with specific row/column capacities.
+* **🏢 Department Management:** Organize students by academic discipline.
 
-The project follows the **MVC (Model-View-Controller)** architectural pattern.
+### 🔐 Security
+* **Secure Authentication:** Protected Admin Login and Registration system.
 
-EXAM\_SEATING\_PLAN\_PROJECT/  
-├── backend/  
-│   ├── config/             \# Database connection setup  
-│   ├── controllers/        \# Business logic (Seating algo, CRUD)  
-│   ├── models/             \# Database queries and schema models  
-│   ├── routes/             \# API Endpoints  
-│   └── middleware/         \# Error handling  
-├── frontend/  
-│   ├── authpages/          \# Login and Register HTML/CSS  
-│   ├── pages/              \# Dashboard and Management interfaces  
-│   └── assets/             \# Static images and global styles  
-├── database.sql            \# SQL file for database initialization  
-├── server.js               \# Application entry point  
-└── package.json            \# Dependencies and scripts
+---
 
-## **⚙️ Installation & Setup**
+## 🛠️ Tech Stack
 
+This project leverages the **MVC (Model-View-Controller)** architecture.
+
+### **Backend**
+* ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white) **Node.js**: Runtime environment.
+* ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB) **Express.js**: Framework for API routing.
+* ![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white) **MySQL**: Relational database.
+* ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens) **Dotenv**: Environment management.
+
+### **Frontend**
+* ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white) **HTML5**: Structure.
+* ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white) **CSS3**: Styling.
+* ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E) **Vanilla JS**: Client-side logic.
+
+---
+
+## 📂 Project Structure
+
+```bash
+EXAM_SEATING_PLAN_PROJECT/
+├── backend/
+│   ├── config/              # Database connection setup
+│   ├── controllers/         # Business logic (Seating algo, CRUD)
+│   ├── models/              # Database queries and schema models
+│   ├── routes/              # API Endpoints
+│   └── middleware/          # Error handling
+├── frontend/
+│   ├── authpages/           # Login and Register HTML/CSS
+│   ├── pages/               # Dashboard and Management interfaces
+│   └── assets/              # Static images and global styles
+├── database.sql             # SQL file for database initialization
+├── server.js                # Application entry point
+└── package.json             # Dependencies and scripts
+```
+⚙️ Installation & Setup
 Follow these steps to run the project locally.
 
-### **1\. Prerequisites**
+1. Prerequisites
+Node.js (v14 or higher)
 
-* Node.js (v14 or higher)  
-* MySQL Server installed and running
+MySQL Server installed and running
 
-### **2\. Clone the Repository**
+2. Clone the Repository
+Bash
 
-git clone [https://github.com/GHSHamad312/exam-seating-manager.git]
+git clone [https://github.com/GHSHamad312/exam-seating-manager.git](https://github.com/GHSHamad312/exam-seating-manager.git)
 cd exam-seating-plan
-
-### **3\. Install Dependencies**
+3. Install Dependencies
+Bash
 
 npm install
+4. Database Configuration
+Create a new MySQL database named exam_seating_db.
 
-### **4\. Database Configuration**
+Import the provided SQL file:
 
-1. Create a new MySQL database (e.g., exam\_seating\_db).  
-2. Import the provided SQL file to create the necessary tables:  
-   * Open your MySQL Workbench or Command Line.  
-   * Run the contents of database.sql.
+Open MySQL Workbench or Command Line.
 
-### **5\. Environment Variables**
+Run the contents of database.sql.
 
-Create a .env file in the root directory and configure your database credentials:
+5. Environment Variables
+Create a .env file in the root directory:
 
-DB\_HOST=localhost  
-DB\_USER=root  
-DB\_PASSWORD=your\_password  
-DB\_NAME=exam\_seating\_db  
-PORT=3000  
+Code snippet
 
-### **6\. Run the Application**
-
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_password
+DB_NAME=exam_seating_db
+PORT=3000
+6. Run the Application
 Start the development server:
 
-npm run dev  
-\# OR  
+Bash
+
+# Run in development mode
+npm run dev
+
+# OR start standard server
 npm start
+Visit http://localhost:3000 in your browser.
 
-Access the application at http://localhost:3000.
+🤝 Contributing
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
 
-## **🤝 Contributing**
+Fork the Project
 
-Contributions are welcome\! Please fork the repository and submit a pull request.
+Create your Feature Branch (git checkout -b feature/AmazingFeature)
+
+Commit your Changes (git commit -m 'Add some AmazingFeature')
+
+Push to the Branch (git push origin feature/AmazingFeature)
+
+Open a Pull Request
+
+<div align="center"> <p>If you found this project helpful, please give it a ⭐️!</p> </div>
