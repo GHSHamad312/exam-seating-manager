@@ -1,7 +1,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/GHSHamad312/exam-seating-manager">
-    <img src="frontend/assets/logo.png" alt="Logo" width="150" height="150">
+    <img src="frontend/assets/logo.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Exam Seating Plan Manager</h3>
@@ -34,10 +34,10 @@
   <summary>Table of Contents</summary>
   <ol>
     <li><a href="#about-the-project">About The Project</a></li>
-    <li><a href="#built-with">Built With</a></li>
     <li><a href="#gallery">Project Gallery</a></li>
+    <li><a href="#built-with">Built With</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#getting-started">Getting Started</a></li>
-    <li><a href="#usage">Usage</a></li>
     <li><a href="#contributing">Contributing</a></li>
   </ol>
 </details>
@@ -46,17 +46,50 @@
 
 ## 🚀 About The Project
 
-![Product Screenshot](frontend/assets/banner_placeholder.png)
-*(Recommended: Add a wide banner image here showing the main dashboard)*
+![Landing Page](path/to/landing_page.png)
+*(The Welcome Interface)*
 
 The **Exam Seating Plan Manager** solves the logistical nightmare of manual exam scheduling. It is a full-stack web application designed to automate seat allocation, ensuring academic integrity by strictly preventing students from the same department or semester from sitting adjacent to one another.
 
-### Key Features
+---
 
-* 🧩 **Algorithmic Seating:** automatically generates conflict-free arrangements based on room capacity and student data.
-* 📄 **PDF Generation:** Instantly creates downloadable, printable PDF reports for notice boards.
-* 🏫 **Room & Student Management:** Full CRUD capabilities for managing university infrastructure and student records.
-* 🔒 **Secure Access:** Role-based authentication to protect sensitive student data.
+## 📸 Gallery
+
+### 🔐 Authentication & Onboarding
+| **Landing Page** | **Login** | **Registration** |
+|:---:|:---:|:---:|
+| <img src="images/landing_page.png" width="300"> | <img src="images/login.png" width="300"> | <img src="images/registering.png" width="300"> |
+
+### 🛠 Administrative Dashboard
+| **Main Dashboard** | **Rooms Management** |
+|:---:|:---:|
+| <img src="images/dashboard.png" width="400"> | <img src="images/rooms.png" width="400"> |
+| *Overview of stats and quick actions* | *Configure room capacities* |
+
+| **Student Records** | **Semester Management** |
+|:---:|:---:|
+| <img src="images/students.png" width="400"> | <img src="images/semesters.png" width="400"> |
+| *Manage student data* | *Organize academic blocks* |
+
+### ⚙️ Core Logic & Output
+| **Plan Generation Modal** | **Seating Output** | **Reports** |
+|:---:|:---:|:---:|
+| <img src="images/plan_generation.png" width="300"> | <img src="images/output.png" width="300"> | <img src="images/reports.png" width="300"> |
+| *Input constraints* | *Final grid layout* | *Exportable lists* |
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+---
+
+## 🔮 Roadmap & Future Enhancements
+
+We are actively working to make this system more robust and user-friendly. Here are the key features currently in development:
+
+- [ ] **Multi-Tenancy / Data Isolation** *Currently, the application runs on a master database where all users view shared data. Future updates will introduce separate account displays, ensuring that every registered organization or user has a private, isolated database view.*
+    
+- [ ] **User Personalization & Settings** *A dedicated Settings Tab is being built to support:*
+    * *🎨 Customizable Themes (Dark/Light Mode)*
+    * *👤 Account Management & Security Settings*
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -74,32 +107,6 @@ This project utilizes a robust **MVC (Model-View-Controller)** architecture.
 | ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) | Frontend Structure |
 | ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white) | Styling and Responsive Design |
 | ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black) | Client-side Interactivity |
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
----
-
-## 📸 Gallery
-
-<div align="center">
-  <h3>🎥 Video Demo</h3>
-  <a href="https://www.youtube.com/watch?v=jYxsA4et9a4">
-    <img src="https://img.youtube.com/vi/jYxsA4et9a4/maxresdefault.jpg" alt="Watch the Video" width="600">
-  </a>
-  <p><i>Click to watch the full workflow</i></p>
-</div>
-
-<br>
-
-| **Dashboard Overview** | **Seating Logic** |
-|:---:|:---:|
-| <img src="frontend/assets/dashboard_screenshot.png" width="400" alt="Dashboard"> | <img src="frontend/assets/seating_screenshot.png" width="400" alt="Seating"> |
-| *Real-time stats and controls* | *Conflict-free generation* |
-
-| **Student Management** | **PDF Export** |
-|:---:|:---:|
-| <img src="frontend/assets/crud_screenshot.png" width="400" alt="CRUD"> | <img src="frontend/assets/pdf_screenshot.png" width="400" alt="PDF"> |
-| *Easy database management* | *Print-ready layouts* |
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
